@@ -2,12 +2,21 @@
 
 import { Badge } from "@/components/ui/badge";
 import { MenuCategoryProps } from "@/types/types";
-
-
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export function MenuCategory({ category }: MenuCategoryProps) {
+  const { ref, isVisible } = useScrollAnimation();
+
   return (
-    <div style={{ borderLeftColor: '#84da8a' }} className="space-y-2 bg-transparent border-l-2 md:space-y-4">
+    <div 
+      ref={ref}
+      className={`space-y-2 bg-transparent border-l-2 md:space-y-4 transition-all duration-700 ease-out ${
+        isVisible 
+          ? 'opacity-100 translate-y-0' 
+          : 'opacity-0 translate-y-8'
+      }`}
+      style={{ borderLeftColor: '#84da8a' }}
+    >
 
 				{/* CATEGORY */}
         <h3 className="pb-2 pl-4 text-3xl font-bold text-white" >
@@ -19,10 +28,17 @@ export function MenuCategory({ category }: MenuCategoryProps) {
 
 				{/* ITEMS */}
         <div className="flex flex-col items-start w-full pl-4 space-y-1 sm:space-y-4">
-          {category.items.map((item) => (
+          {category.items.map((item, index) => (
             <div
               key={item.id}
-              className="flex items-center justify-between w-full bg-transparent "
+              className={`flex items-center justify-between w-full bg-transparent transition-all duration-500 ease-out ${
+                isVisible 
+                  ? 'opacity-100 translate-x-0' 
+                  : 'opacity-0 translate-x-4'
+              }`}
+              style={{ 
+                transitionDelay: isVisible ? `${(index + 1) * 100}ms` : '0ms' 
+              }}
             >
               <div className="flex-1">
                 <div className="flex items-center gap-2 sm:pb-1">

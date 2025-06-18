@@ -13,7 +13,7 @@ export function Logo() {
     // 	Beer House
     // 	</h1>
     <div
-      className="relative z-10 w-full h-64 bg-center bg-cover rounded-lg cursor-pointer sm:h-48 md:h-56 lg:h-64"
+      className="relative z-10 w-full h-64 bg-center bg-cover rounded-lg opacity-0 cursor-pointer sm:h-48 md:h-56 lg:h-64 animate-fade-in-straight animation-delay-100"
       style={{ backgroundImage: "url('/images/logo.jpg')" }}
       onClick={() => router.push("/")}
     >

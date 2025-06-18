@@ -5,6 +5,7 @@ import { PromotionsDisplay } from "@/components/ui/menu/promotions-display"
 import { getPublicCategories, getPublicPromotions } from "@/actions/menu"
 import { CredentialsInfo } from "@/components/ui/menu/credentials-info"
 import { DescriptionInfo } from "@/components/ui/menu/description-info"
+import { MenuNavigation } from "@/components/ui/menu/menu-navigation"
 
 export default async function Index() {
   const [categories, promotions] = await Promise.all([
@@ -14,13 +15,18 @@ export default async function Index() {
 
   return (
     <Container>
-        <CredentialsInfo />
-        <Logo />
+        <div className="opacity-0 animate-fade-in animation-delay-500">
+          <CredentialsInfo />
+        </div>
+          <Logo />
       <div className="pt-4 space-y-8">
-      <h1 className="flex items-center justify-center font-bold text-center text-white text-8xl sm:text-5xl md:text-6xl lg:text-7xl">
+      <h1 className="flex items-center justify-center font-bold text-center text-white opacity-0 animate-fade-in animation-delay-700 text-8xl sm:text-5xl md:text-6xl lg:text-7xl">
         Menu
       </h1>
 
+			<MenuNavigation />
+
+        <div className="flex flex-col w-full opacity-0 animate-fade-in animation-delay-1000 gap-y-8">
 
 
 				{/* <DescriptionInfo /> */}
@@ -39,9 +45,11 @@ export default async function Index() {
           </div>
         )}
 
-        <PromotionsDisplay promotions={promotions} />
+          <PromotionsDisplay promotions={promotions} />
 
       </div>
+        </div>
+
 
     </Container>
   )
