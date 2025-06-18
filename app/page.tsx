@@ -24,7 +24,7 @@ export default async function Index() {
         Menu
       </h1>
 
-			<MenuNavigation />
+			<MenuNavigation categories={categories} promotions={promotions} />
 
         <div className="flex flex-col w-full opacity-0 animate-fade-in animation-delay-1000 gap-y-8">
 
@@ -33,9 +33,11 @@ export default async function Index() {
 
         
         {/* Menu categories */}
-        <div className="grid grid-rows-1 pt-6 gap-y-8 md:gap-x-24 md:grid-flow-row md:grid-cols-2">
+        <div className="grid gap-8 pt-6 md:grid-cols-2">
           {categories.map((category) => (
-            <MenuCategory key={category.id} category={category} />
+            <div key={category.id} id={`category-${category.id}`} className="scroll-mt-24">
+              <MenuCategory category={category} />
+            </div>
           ))}
         </div>
         
@@ -45,7 +47,9 @@ export default async function Index() {
           </div>
         )}
 
-          <PromotionsDisplay promotions={promotions} />
+          <div id="promotions-section" className="scroll-mt-24">
+            <PromotionsDisplay promotions={promotions} />
+          </div>
 
       </div>
         </div>
