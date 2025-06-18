@@ -9,7 +9,7 @@ import CustomLink from "./custom-link"
 
 const UpdateForm = () => {
   const { data: session, update } = useSession()
-  const [name, setName] = useState(`New ${session?.user?.name}` ?? "")
+  const [name, setName] = useState(`New ${session?.user?.name}` || "")
 
   if (!session?.user) return null
   return (
@@ -25,7 +25,7 @@ const UpdateForm = () => {
             console.log({ newSession })
           }
         }}
-        className="flex items-center space-x-2 w-full max-w-sm"
+        className="flex items-center w-full max-w-sm space-x-2"
       >
         <Input
           type="text"

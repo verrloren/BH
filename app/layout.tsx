@@ -1,28 +1,33 @@
 import "./globals.css"
 import type { Metadata } from "next"
-import { DM_Sans } from "next/font/google"
-import Header from "@/components/navbar/header"
-// import { ThemeProvider } from "@/providers/theme-provider"
+import { Poppins } from "next/font/google"
+import { Toaster } from "sonner"
 
-const DM = DM_Sans({ subsets: ["latin"] })
-
+const poppins = Poppins({
+	subsets: ["latin"],
+	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+})
+	
 export const metadata: Metadata = {
-	title: "Alkeymist",
+	title: "Beer House Menu",
 	description:
-		"Alkeymist is a custom keyboards e-commerce store. We offer a wide range of custom keyboards, keycaps, and accessories. Admin panel for managing products and orders is also included.",
+		"Beer House Menu",
 }
 export default function RootLayout({ children }: React.PropsWithChildren) {
 	return (
 		<html lang="en">
-			<body className={DM.className}>
-				{/* <ThemeProvider> */}
+			<body className={poppins.className}>
 					<div className="w-full">
-						<Header />
 						<main className="">
 							{children}
 						</main>
 					</div>
-				{/* </ThemeProvider> */}
+					<Toaster 
+						theme="dark" 
+						position="top-right"
+						expand={false}
+						richColors
+					/>
 			</body>
 		</html>
 	)

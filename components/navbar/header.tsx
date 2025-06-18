@@ -17,9 +17,8 @@ export default async function Header() {
 		<header className="w-full sticky flex justify-center 
 			border-b border-[#ebebeb] bg-white h-16">
 			<Container>
-				<div className="w-full h-full flex items-center justify-between">
-				{/* <div className="flex items-center justify-between w-full 
-			max-w-6xl px-4 mx-auto sm:px-6"> */}
+				<div className="flex items-center justify-between w-full h-full">
+				{/* <div className="flex items-center justify-between w-full max-w-6xl px-4 mx-auto sm:px-6"> */}
 					<MainNav />
 					{/* <UserButton /> */}
 					{session ? (
@@ -42,7 +41,6 @@ export default async function Header() {
 					)}
 				</div>
 			</Container>
-			{/* <ThemeToggle /> */}
 		</header>
 	)
 }

@@ -48,18 +48,17 @@ export const LoginForm = () => {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-3/4 sm:w-1/2">
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-8">
 
 					<FormField
 						control={form.control}
 						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input disabled={isPending} type='email' placeholder="fine@email.com" {...field} />
+									<Input disabled={isPending} type='email' placeholder="Email" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -71,9 +70,8 @@ export const LoginForm = () => {
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input disabled={isPending} type='password' placeholder="******" {...field} />
+									<Input disabled={isPending} type='password' placeholder="Password" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -83,7 +81,7 @@ export const LoginForm = () => {
 					<FormError message={error || urlError} />
 					<FormSuccess message={success} />
 
-					<Button disabled={isPending} className="w-full" type="submit">Login</Button>
+					<Button variant="white" disabled={isPending} className="w-full " type="submit">Login</Button>
 				</form>
 			</Form>
 		</div>

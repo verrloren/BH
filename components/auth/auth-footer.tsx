@@ -13,11 +13,11 @@ export function AuthFooter({ text, src }: AuthFooterProps) {
 	return (
 		<div 
 			onClick={() => router.push(src)} 
-			className="w-full h-20 bg-white  absolute bottom-0 left-0 
-			border-t-[1px] border-[#eBEBEB] flex justify-center items-center
-			cursor-pointer hover:underline hover:shadow-xl hover:border-[#dedede]">
+			className="w-full h-20 bg-black  absolute bottom-0 left-0 
+			border-t-[1px] border-neutral-700 flex justify-center items-center
+			cursor-pointer hover:shadow-xl ">
 			<Link
-				className="text-md text-neutral-700 hover:underline"
+				className="text-sm transition-colors md:text-md text-neutral-500 hover:text-white"
 				href="/auth/register">
 				{text}
 			</Link>

@@ -49,18 +49,17 @@ export const RegisterForm = () => {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-3/4 sm:w-1/2">
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-8">
 
 					<FormField
 						control={form.control}
 						name="name"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Name</FormLabel>
 								<FormControl>
-									<Input disabled={isPending} placeholder="John Wick" {...field} />
+									<Input disabled={isPending} placeholder="Name" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -72,9 +71,8 @@ export const RegisterForm = () => {
 						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input disabled={isPending} type='email' placeholder="fine@email.com" {...field} />
+									<Input disabled={isPending} type='email' placeholder="Email" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -86,9 +84,8 @@ export const RegisterForm = () => {
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input disabled={isPending} type='password' placeholder="******" {...field} />
+									<Input disabled={isPending} type='password' placeholder="Password" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -98,7 +95,7 @@ export const RegisterForm = () => {
 					<FormError message={error} />
 					<FormSuccess message={success} />
 
-					<Button disabled={isPending} className="w-full" type="submit">Sign up</Button>
+					<Button variant="white" disabled={isPending} className="w-full" type="submit">Sign up</Button>
 				</form>
 			</Form>
 		</div>

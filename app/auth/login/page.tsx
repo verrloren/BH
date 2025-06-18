@@ -1,14 +1,11 @@
 import { AuthFooter } from "@/components/auth/auth-footer";
 import { LoginForm } from "@/components/auth/login-form";
-import { Social } from "@/components/auth/social";
-import Link from "next/link";
 
-interface LoginPageProps {}
 
-export default function LoginPage({}: LoginPageProps) {
+export default function LoginPage() {
 	return (
-		<div className="w-full h-full flex flex-col justify-center items-center">
-			<h1 className="sm:text-5xl text-4xl font-semibold text-center absolute top-[22%]">
+		<div className="flex flex-col items-center justify-center w-full h-full">
+			<h1 className="pb-8 text-4xl font-semibold md:pb-12 sm:text-6xl md:text-7xl xl:text-8xl 2xl:text-9xl">
 				Welcome back!
 			</h1>
 			
