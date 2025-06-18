@@ -22,7 +22,7 @@ interface MenuNavigationProps {
 
 export function MenuNavigation({ categories, promotions }: MenuNavigationProps) {
   return (
-    <div className="w-full p-4 bg-transparent border rounded-lg opacity-0 border-neutral-800 animate-fade-in animation-delay-900">
+    <div className="w-full p-4 bg-transparent border rounded-lg opacity-0 border-neutral-800 animate-fade-in animation-delay-1000">
       <h2 className="pb-2 mb-4 text-lg font-semibold text-white border-b border-dotted border-neutral-600">
         Quick Navigation
       </h2>

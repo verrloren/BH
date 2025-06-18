@@ -20,7 +20,7 @@ export default async function Index() {
         </div>
           <Logo />
       <div className="pt-4 space-y-8">
-      <h1 className="flex items-center justify-center font-bold text-center text-white opacity-0 animate-fade-in animation-delay-700 text-8xl sm:text-5xl md:text-6xl lg:text-7xl">
+      <h1 className="flex items-center justify-center font-bold text-center text-white opacity-0 animate-fade-in animation-delay-700 text-8xl sm:text-9xl">
         Menu
       </h1>
 
@@ -33,9 +33,9 @@ export default async function Index() {
 
         
         {/* Menu categories */}
-        <div className="grid gap-8 pt-6 md:grid-cols-2">
+        <div className="grid pt-6 gap-x-8 gap-y-12 md:grid-cols-2">
           {categories.map((category) => (
-            <div key={category.id} id={`category-${category.id}`} className="scroll-mt-24">
+            <div key={category.id} id={`category-${category.id}`}>
               <MenuCategory category={category} />
             </div>
           ))}
@@ -47,7 +47,7 @@ export default async function Index() {
           </div>
         )}
 
-          <div id="promotions-section" className="scroll-mt-24">
+          <div className="pt-4" id="promotions-section">
             <PromotionsDisplay promotions={promotions} />
           </div>
 
