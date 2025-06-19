@@ -105,7 +105,7 @@ export function MenuItemsList() {
                 <span className="text-sm text-neutral-400">({items.length} items)</span>
               </div>
               
-              <div className="ml-4 space-y-4">
+              <div className="space-y-4">
                 {items.map((item) => {
                   const isEditing = editingItemId === item.id;
                   

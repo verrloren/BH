@@ -58,7 +58,7 @@ export function MenuCategory({ category }: MenuCategoryProps) {
               <div className="flex flex-col items-end ml-4">
                 {item.isOnSale && item.oldPrice ? (
                   <div className="flex items-center gap-x-4">
-                    <span  className="text-lg text-[#d3524c]">
+                    <span  className="text-lg text-[#d3524c] line-through">
                       {item.oldPrice}
                     </span>
                     <span className="text-lg font-bold text-green-400">
