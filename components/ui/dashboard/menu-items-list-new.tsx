@@ -9,13 +9,15 @@ import {
   toggleMenuItemAvailable,
   deleteMenuItem,
 } from "@/actions/dashboard";
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useDashboard } from "@/context/dashboard-context";
 import { toast } from "sonner";
+import { MenuItemEditForm } from "./menu-item-edit-form";
 
 export function MenuItemsList() {
   const { menuItems, refreshMenuItems, isLoading } = useDashboard();
   const [isPending, startTransition] = useTransition();
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const handleToggleActive = (id: string) => {
     startTransition(async () => {
@@ -42,8 +44,15 @@ export function MenuItemsList() {
   };
 
   const handleEdit = (id: string) => {
-    // TODO: Implement edit functionality
-    console.log("Edit item:", id);
+    setEditingItemId(id);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingItemId(null);
+  };
+
+  const handleSaveEdit = () => {
+    setEditingItemId(null);
   };
 
   const handleDelete = (id: string) => {
@@ -78,98 +87,109 @@ export function MenuItemsList() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {menuItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col items-center justify-between p-4 bg-transparent border rounded-lg border-neutral-800 sm:flex-row"
-            >
-              <div className="flex-1">
-                <div className="flex-1 mb-1">
-                  <h3 className="font-semibold text-white">{item.title}</h3>
-                  {item.description && (
-                    <p className="mb-2 text-sm text-neutral-400">
-                      {item.description}
-                    </p>
-                  )}
-                  <Badge
-                    variant="outline"
-                    className="pb-1 border-neutral-600 text-neutral-400"
-                  >
-                    {item.categoryName}
-                  </Badge>
-                  {item.isOnSale && <Badge variant="destructive">Sale</Badge>}
-                  <Badge variant={item.isActive ? "default" : "secondary"}>
-                    {item.isActive ? "Active" : "Inactive"}
-                  </Badge>
-                  <Badge variant={item.isAvailable ? "default" : "secondary"}>
-                    {item.isAvailable ? "Available" : "Unavailable"}
-                  </Badge>
-                </div>
+          {menuItems.map((item) => {
+            const isEditing = editingItemId === item.id;
+            
+            return (
+              <div key={item.id} className="space-y-4">
+                {isEditing ? (
+                  <MenuItemEditForm 
+                    menuItem={item}
+                    onCancel={handleCancelEdit}
+                    onSave={handleSaveEdit}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-between p-4 bg-transparent border rounded-lg border-neutral-800 sm:flex-row">
+                    <div className="flex-1">
+                      <div className="flex-1 mb-1">
+                        <h3 className="font-semibold text-white">{item.title}</h3>
+                        {item.description && (
+                          <p className="mb-2 text-sm text-neutral-400">
+                            {item.description}
+                          </p>
+                        )}
+                        <Badge
+                          variant="outline"
+                          className="pb-1 border-neutral-600 text-neutral-400"
+                        >
+                          {item.categoryName}
+                        </Badge>
+                        {item.isOnSale && <Badge variant="destructive">Sale</Badge>}
+                        <Badge variant={item.isActive ? "default" : "secondary"}>
+                          {item.isActive ? "Active" : "Inactive"}
+                        </Badge>
+                        <Badge variant={item.isAvailable ? "default" : "secondary"}>
+                          {item.isAvailable ? "Available" : "Unavailable"}
+                        </Badge>
+                      </div>
 
-                <div className="flex items-center gap-2">
-                  {item.isOnSale && item.oldPrice ? (
-                    <>
-                      <span className="text-lg font-bold text-green-400">
-                        {item.price} lari
-                      </span>
-                      <span className="text-sm line-through text-neutral-600">
-                        {item.oldPrice} lari
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-lg font-bold text-white">
-                      {item.price} lari
-                    </span>
-                  )}
-                  <span className="text-xs text-neutral-600">
-                    • Order: {item.order}
-                  </span>
-                </div>
+                      <div className="flex items-center gap-2">
+                        {item.isOnSale && item.oldPrice ? (
+                          <>
+                            <span className="text-lg font-bold text-green-400">
+                              {item.price} lari
+                            </span>
+                            <span className="text-sm line-through text-neutral-600">
+                              {item.oldPrice} lari
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-lg font-bold text-white">
+                            {item.price} lari
+                          </span>
+                        )}
+                        <span className="text-xs text-neutral-600">
+                          • Order: {item.order}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 pt-4 md:pt-0">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleToggleActive(item.id)}
+                        title={item.isActive ? "Deactivate" : "Activate"}
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        {item.isActive ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleToggleAvailable(item.id)}
+                        title={
+                          item.isAvailable ? "Make unavailable" : "Make available"
+                        }
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        {item.isAvailable ? "✓" : "✗"}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(item.id)}
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDelete(item.id)}
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-4 pt-4 md:pt-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleToggleActive(item.id)}
-                  title={item.isActive ? "Deactivate" : "Activate"}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  {item.isActive ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleToggleAvailable(item.id)}
-                  title={
-                    item.isAvailable ? "Make unavailable" : "Make available"
-                  }
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  {item.isAvailable ? "✓" : "✗"}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleEdit(item.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(item.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </CardContent>
     </Card>

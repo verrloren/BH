@@ -328,3 +328,38 @@ export async function updatePromotion(formData: FormData) {
     return { success: false, error: "Failed to update promotion" };
   }
 }
+
+export async function updateMenuItem(formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const price = formData.get("price") as string;
+    const oldPrice = formData.get("oldPrice") as string;
+    const categoryId = formData.get("categoryId") as string;
+    const order = formData.get("order") as string;
+
+    if (!id || !title || !price || !categoryId) {
+      return { success: false, error: "Missing required fields" };
+    }
+
+    await db.menuItem.update({
+      where: { id },
+      data: {
+        title,
+        description: description || null,
+        price: parseFloat(price),
+        oldPrice: oldPrice ? parseFloat(oldPrice) : null,
+        categoryId,
+        order: parseInt(order) || 0,
+        isOnSale: !!oldPrice && parseFloat(oldPrice) > parseFloat(price),
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating menu item:", error);
+    return { success: false, error: "Failed to update menu item" };
+  }
+}

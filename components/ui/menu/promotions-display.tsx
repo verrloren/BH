@@ -27,14 +27,14 @@ export function PromotionsDisplay({ promotions }: PromotionsDisplayProps) {
           : 'opacity-60 translate-y-4'
       }`}
     >
-        <h3 className="pb-2 pl-4 text-3xl font-bold text-white">Promotions</h3>
+        <h3 className="pb-2 pl-4 text-3xl font-bold text-white sm:pb-4 md:pb-4 sm:text-4xl xl:text-5xl">Promotions</h3>
 
 
         <div className="">
           {promotions.map((promotion, index) => (
             <div
               key={promotion.id}
-              className={`pl-4 bg-transparent transition-all duration-500 ease-out border-l-2 ${
+              className={`pl-4 pb-8 bg-transparent transition-all duration-500 ease-out border-l-2  ${
                 isVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-60 translate-x-2'
@@ -45,7 +45,7 @@ export function PromotionsDisplay({ promotions }: PromotionsDisplayProps) {
             >
 							{/* TITLE */}
               <h3 className="text-lg text-white md:text-xl">{promotion.title}</h3>
-              <p className="pb-4 text-sm text-neutral-400">
+              <p className="text-sm text-neutral-400">
                 {promotion.description}
               </p>
 
