@@ -6,21 +6,16 @@ import { useRouter } from "next/navigation";
 export function Logo() {
   const router = useRouter();
   return (
-    // <h1
-    // 	onClick={() => router.push('/')}
-    // 	className="text-5xl font-bold cursor-pointer text-neutral-100 sm:text-5xl md:text-6xl lg:text-7xl"
-    // >
-    // 	Beer House
-    // 	</h1>
-    <div
-      className="relative z-10 w-full h-64 bg-center bg-cover rounded-lg opacity-0 cursor-pointer sm:h-48 md:h-56 lg:h-64 animate-fade-in-straight animation-delay-100"
-      style={{ backgroundImage: "url('/images/logo.jpg')" }}
-      onClick={() => router.push("/")}
-    >
+    <div className="w-full md:flex md:justify-center lg:flex lg:items-end lg:justify-between">
+        <h1 className="lg:flex items-center hidden justify-center font-bold text-center text-white opacity-0 animate-fade-in animation-delay-700 text-8xl sm:text-[180px] md:text-[190px] xl:text-[220px]">
+          Menu
+        </h1>
 
-      {/* <h1 className="absolute -bottom-[8px] flex items-center justify-center font-bold text-center text-white left-[14%] text-7xl sm:text-5xl md:text-6xl lg:text-7xl">
-        Menu
-      </h1> */}
+      <div
+        className="relative z-10 bg-center bg-cover rounded-lg opacity-0 cursor-pointer md:aspect-[25/18] min-h-80 sm:h-[500px] animate-fade-in-straight animation-delay-100"
+        style={{ backgroundImage: "url('/images/logo.jpg')" }}
+        onClick={() => router.push("/")}
+      />
     </div>
   );
 }

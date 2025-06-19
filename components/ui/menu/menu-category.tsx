@@ -10,7 +10,7 @@ export function MenuCategory({ category }: MenuCategoryProps) {
   return (
     <div 
       ref={ref}
-      className={`space-y-2 bg-transparent border-l-2 md:space-y-4 transition-all duration-700 ease-out ${
+      className={`space-y-2 bg-transparent md:space-y-4 transition-all duration-700 ease-out ${
         isVisible 
           ? 'opacity-100 translate-y-0' 
           : 'opacity-0 translate-y-8'
@@ -19,7 +19,7 @@ export function MenuCategory({ category }: MenuCategoryProps) {
     >
 
 				{/* CATEGORY */}
-        <h3 className="pb-2 pl-4 text-3xl font-bold text-white" >
+        <h3 className="pb-2 pl-4 text-3xl font-bold text-white sm:pb-4 md:pb-4 sm:text-4xl xl:text-5xl" >
 					{category.name}
 					</h3>
         {category.description && (
@@ -27,11 +27,11 @@ export function MenuCategory({ category }: MenuCategoryProps) {
         )}
 
 				{/* ITEMS */}
-        <div className="flex flex-col items-start w-full pl-4 space-y-1 sm:space-y-4">
+        <div className="flex flex-col items-start w-full pl-4 space-y-1 border-l-2 sm:space-y-4" style={{ borderLeftColor: '#84da8a' }}>
           {category.items.map((item, index) => (
             <div
               key={item.id}
-              className={`flex items-center justify-between w-full bg-transparent transition-all duration-500 ease-out ${
+              className={`flex items-center justify-between w-full bg-transparent transition-all duration-500 ease-out border-b border-dashed border-neutral-800 last:border-b-0 ${
                 isVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 translate-x-4'

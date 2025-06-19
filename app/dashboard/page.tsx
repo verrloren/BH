@@ -1,4 +1,4 @@
-import { auth, signOut } from "@/auth";
+import { signOut } from "@/auth";
 import Container from "@/components/container";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -15,24 +15,26 @@ import { DashboardProvider } from "@/context/dashboard-context";
 
 const DashboardPage = async () => {
 
-	const session = await auth();
 
 	return (
 	<DashboardProvider>
 		<Container>
 
 		<form 
-			className="flex items-center justify-between w-full "
+			className="flex flex-col items-end justify-between w-full "
 		action={async () => {
 			//that's how we use signOut in server components, server actions etc
 			"use server";
 			await signOut();
-		}}>
-			<Logo />
 
-			<Button className="w-12 h-12 bg-transparent border rounded-full border-neutral-800"type="submit">
+		}}>
+						<Button className="w-12 h-12 bg-transparent border rounded-full border-neutral-800"type="submit">
 				<LogOutIcon size={24} className="w-12 h-12 text-center" />
 			</Button>
+			<Logo />
+
+
+
 		</form>
 
 		<Tabs defaultValue="categories" className="w-full pt-4 md:pt-8">

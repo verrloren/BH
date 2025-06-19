@@ -52,7 +52,7 @@ export function CategoriesList() {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 md:flex-row border-neutral-800"
+              className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 sm:flex-row border-neutral-800"
             >
               <div className="flex-1 py-2">
                 <div className="flex items-center gap-2 mb-1">
@@ -74,7 +74,7 @@ export function CategoriesList() {
                   Order: {category.order}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4 pt-2 ml-4">
                 <Button
                   variant="outline"
                   size="sm"

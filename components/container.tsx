@@ -6,7 +6,7 @@ interface ContainerProps {
 
 const Container: FC<ContainerProps> = ({ children }) => {
 	return (
-		<div className='w-full h-full px-6 py-8 md:px-8 xl:px-12'>{children}</div>
+		<div className='w-full h-full px-6 py-8 xl:pt-12 md:px-8 lg:px-16 xl:px-24'>{children}</div>
 	)
 }
 export default Container

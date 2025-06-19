@@ -73,9 +73,9 @@ export function PromotionsList() {
           {promotions.map((promotion) => (
             <div
               key={promotion.id}
-              className="flex items-start justify-between p-4 bg-transparent border rounded-lg border-neutral-800"
+              className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 sm:flex-row border-neutral-800"
             >
-              <div className="flex-1">
+              <div className="flex-1 py-2">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-semibold text-white">{promotion.title}</h3>
                   <Badge variant={promotion.isActive ? "default" : "secondary"}>
@@ -89,7 +89,7 @@ export function PromotionsList() {
                   Created: {formatDate(promotion.createdAt)}
                 </p>
               </div>
-              <div className="flex items-center gap-2 ml-4">
+              <div className="flex items-center gap-4 pt-4 md:pt-0">
                 <Button
                   variant="outline"
                   size="sm"
