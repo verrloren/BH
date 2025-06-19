@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Badge } from "../badge";
 import { toggleCategoryActive, deleteCategory } from "@/actions/dashboard";
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useDashboard } from "@/context/dashboard-context";
 import { toast } from "sonner";
+import { CategoryEditForm } from "./category-edit-form";
 
 export function CategoriesList() {
   const { categories, refreshCategories } = useDashboard();
   const [isPending, startTransition] = useTransition();
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
 
   const handleToggleActive = (id: string) => {
     startTransition(async () => {
@@ -26,8 +28,15 @@ export function CategoriesList() {
   };
 
   const handleEdit = (id: string) => {
-    // TODO: Implement edit functionality
-    console.log("Edit category:", id);
+    setEditingCategoryId(id);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCategoryId(null);
+  };
+
+  const handleSaveEdit = () => {
+    setEditingCategoryId(null);
   };
 
   const handleDelete = (id: string) => {
@@ -50,60 +59,67 @@ export function CategoriesList() {
       <CardContent>
         <div className="space-y-4">
           {categories.map((category) => (
-            <div
-              key={category.id}
-              className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 sm:flex-row border-neutral-800"
-            >
-              <div className="flex-1 py-2">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-white">{category.name}</h3>
+            <div key={category.id}>
+              {editingCategoryId === category.id ? (
+                <CategoryEditForm
+                  category={category}
+                  onCancel={handleCancelEdit}
+                  onSave={handleSaveEdit}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 sm:flex-row border-neutral-800">
+                  <div className="flex-1 py-2">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-white">{category.name}</h3>
 
-                  <Badge variant={category.isActive ? "default" : "secondary"}>
-                    {category.isActive ? "Active" : "Inactive"}
-                  </Badge>
-                  <Badge variant="outline" className="border-neutral-600 text-neutral-400">
-                    {category.itemCount} items
-                  </Badge>
+                      <Badge variant={category.isActive ? "default" : "secondary"}>
+                        {category.isActive ? "Active" : "Inactive"}
+                      </Badge>
+                      <Badge variant="outline" className="border-neutral-600 text-neutral-400">
+                        {category.itemCount} items
+                      </Badge>
+                    </div>
+                    {category.description && (
+                      <p className="text-sm text-neutral-400">
+                        {category.description}
+                      </p>
+                    )}
+                    <p className="mt-1 text-xs text-neutral-600">
+                      Order: {category.order}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4 pt-2 ml-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleToggleActive(category.id)}
+                      className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                    >
+                      {category.isActive ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(category.id)}
+                      className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(category.id)}
+                      className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-                {category.description && (
-                  <p className="text-sm text-neutral-400">
-                    {category.description}
-                  </p>
-                )}
-                <p className="mt-1 text-xs text-neutral-600">
-                  Order: {category.order}
-                </p>
-              </div>
-              <div className="flex items-center gap-4 pt-2 ml-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleToggleActive(category.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  {category.isActive ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleEdit(category.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(category.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
+              )}
             </div>
           ))}
         </div>

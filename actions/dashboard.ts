@@ -84,6 +84,30 @@ export async function deleteCategory(categoryId: string) {
   }
 }
 
+export async function updateCategory(formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const order = parseInt(formData.get("order") as string) || 0;
+
+    const category = await db.menuCategory.update({
+      where: { id },
+      data: {
+        name,
+        description: description || null,
+        order,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, category };
+  } catch (error) {
+    console.error("Error updating category:", error);
+    return { success: false, error: "Failed to update category" };
+  }
+}
+
 // Menu Item Actions
 export async function createMenuItem(formData: FormData) {
   try {
