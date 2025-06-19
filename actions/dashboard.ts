@@ -142,10 +142,13 @@ export async function createMenuItem(formData: FormData) {
 export async function getMenuItems() {
   try {
     const menuItems = await db.menuItem.findMany({
-      orderBy: { order: "asc" },
+      orderBy: [
+        { category: { order: "asc" } },
+        { order: "asc" }
+      ],
       include: {
         category: {
-          select: { name: true },
+          select: { name: true, order: true },
         },
       },
     });
