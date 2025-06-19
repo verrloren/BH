@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Badge } from "../badge";
 import { togglePromotionActive, deletePromotion } from "@/actions/dashboard";
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useDashboard } from "@/context/dashboard-context";
 import { toast } from "sonner";
+import { PromotionEditForm } from "./promotion-edit-form";
 
 export function PromotionsList() {
   const { promotions, refreshPromotions, isLoading } = useDashboard();
   const [isPending, startTransition] = useTransition();
+  const [editingPromotionId, setEditingPromotionId] = useState<string | null>(null);
 
   const handleToggleActive = (id: string) => {
     startTransition(async () => {
@@ -26,8 +28,15 @@ export function PromotionsList() {
   };
 
   const handleEdit = (id: string) => {
-    // TODO: Implement edit functionality
-    console.log("Edit promotion:", id);
+    setEditingPromotionId(id);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPromotionId(null);
+  };
+
+  const handleSaveEdit = () => {
+    setEditingPromotionId(null);
   };
 
   const handleDelete = (id: string) => {
@@ -70,58 +79,69 @@ export function PromotionsList() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {promotions.map((promotion) => (
-            <div
-              key={promotion.id}
-              className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 sm:flex-row border-neutral-800"
-            >
-              <div className="flex-1 py-2">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="font-semibold text-white">{promotion.title}</h3>
-                  <Badge variant={promotion.isActive ? "default" : "secondary"}>
-                    {promotion.isActive ? "Active" : "Inactive"}
-                  </Badge>
-                </div>
-                <p className="mb-2 text-sm text-neutral-400">
-                  {promotion.description}
-                </p>
-                <p className="text-xs text-neutral-600">
-                  Created: {formatDate(promotion.createdAt)}
-                </p>
+          {promotions.map((promotion) => {
+            const isEditing = editingPromotionId === promotion.id;
+            
+            return (
+              <div key={promotion.id} className="space-y-4">
+                {isEditing ? (
+                  <PromotionEditForm 
+                    promotion={promotion}
+                    onCancel={handleCancelEdit}
+                    onSave={handleSaveEdit}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-between p-4 py-2 bg-transparent border rounded-lg md:py-0 sm:flex-row border-neutral-800">
+                    <div className="flex-1 py-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-white">{promotion.title}</h3>
+                        <Badge variant={promotion.isActive ? "default" : "secondary"}>
+                          {promotion.isActive ? "Active" : "Inactive"}
+                        </Badge>
+                      </div>
+                      <p className="mb-2 text-sm text-neutral-400">
+                        {promotion.description}
+                      </p>
+                      <p className="text-xs text-neutral-600">
+                        Created: {formatDate(promotion.createdAt)}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4 pt-4 md:pt-0">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleToggleActive(promotion.id)}
+                        title={promotion.isActive ? "Deactivate" : "Activate"}
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        {promotion.isActive ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(promotion.id)}
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDelete(promotion.id)}
+                        className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-4 pt-4 md:pt-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleToggleActive(promotion.id)}
-                  title={promotion.isActive ? "Deactivate" : "Activate"}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  {promotion.isActive ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleEdit(promotion.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(promotion.id)}
-                  className="bg-transparent border-neutral-800 text-neutral-400 hover:brightness-110"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </CardContent>
     </Card>

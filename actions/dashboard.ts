@@ -302,3 +302,29 @@ export async function deletePromotion(promotionId: string) {
     return { success: false, error: "Failed to delete promotion" };
   }
 }
+
+export async function updatePromotion(formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+
+    if (!id || !title) {
+      return { success: false, error: "Missing required fields" };
+    }
+
+    await db.promotion.update({
+      where: { id },
+      data: {
+        title,
+        description: description || null,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating promotion:", error);
+    return { success: false, error: "Failed to update promotion" };
+  }
+}
