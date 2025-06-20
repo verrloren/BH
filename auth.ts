@@ -39,24 +39,9 @@ export const {
 
 				// add role to session.user
 
-				/*  typescript will throw error so we can add create next-auth.d.ts file:
-
-				import { UserRole } from "@prisma/client";
-				import NextAuth, { type DefaultSession } from "next-auth"
-							
-				export type ExtendedUser = DefaultSession["user"] & {
-					role: UserRole
-				};
-				
-				declare module "next-auth" {
-					interface Session {
-						user: ExtendedUser;
-					}
-				}
-				}*/
-
-				if(token.role && session.user.role) {
-					session.user.role = token.role as "ADMIN" || "USER";
+				if(token.role && session.user) {
+					//@ts-expect-error 12321
+					session.user.role = token.role as UserRole;
 				}
 
 				return session
