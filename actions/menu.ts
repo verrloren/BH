@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 // Public menu actions - only fetch active and available items
 export async function getPublicCategories() {
@@ -58,4 +59,9 @@ export async function getPublicPromotions() {
     console.error("Error fetching public promotions:", error);
     return [];
   }
+}
+
+export async function revalidatePublicMenu() {
+  revalidatePath('/');
+  revalidatePath('/dashboard');
 }

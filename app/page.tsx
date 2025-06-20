@@ -7,6 +7,9 @@ import { CredentialsInfo } from "@/components/ui/menu/credentials-info";
 import { DescriptionInfo } from "@/components/ui/menu/description-info";
 import { MenuNavigation } from "@/components/ui/menu/menu-navigation";
 
+// Force dynamic rendering to always get fresh data
+export const dynamic = 'force-dynamic';
+
 export default async function Index() {
   const [categories, promotions] = await Promise.all([
     getPublicCategories(),
