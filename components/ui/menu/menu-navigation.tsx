@@ -22,8 +22,8 @@ interface MenuNavigationProps {
 
 export function MenuNavigation({ categories, promotions }: MenuNavigationProps) {
   return (
-    <div className="w-full p-4 bg-transparent rounded-lg opacity-0 border-neutral-800 animate-fade-in animation-delay-1000">
-      {/* <h2 className="pb-2 mb-4 text-lg font-semibold text-white border-b border-dashed border-neutral-800">
+    <div className="w-full p-4 bg-transparent rounded-lg opacity-0 animate-fade-in animation-delay-1000">
+      {/* <h2 className="pb-2 mb-4 text-lg font-semibold text-white border-b border-dashed border-neutral- ">
         Quick Navigation
       </h2> */}
       
@@ -33,7 +33,7 @@ export function MenuNavigation({ categories, promotions }: MenuNavigationProps) 
           <a
             key={category.id}
             href={`#category-${category.id}`}
-            className="block p-3 text-sm text-left text-white no-underline transition-all duration-200 bg-transparent border rounded-lg group border-neutral-800 hover:bg-neutral-800 hover:border-neutral-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-neutral-500 active:scale-95"
+            className="block p-3 text-sm text-left text-white no-underline transition-all duration-200 bg-transparent border rounded-lg group border-neutral-700 hover:bg-neutral-800 hover:border-neutral-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-neutral-500 active:scale-95"
           >
             <div className="font-medium truncate transition-colors group-hover:text-green-400">
               {category.name}

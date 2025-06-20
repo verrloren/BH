@@ -9,9 +9,9 @@ const poppins = Poppins({
 })
 	
 export const metadata: Metadata = {
-	title: "Beer House Menu",
+	title: "Beer House",
 	description:
-		"Beer House Menu",
+		"Beer House is your favorite bar in Batumi. Craft and draft beer, cocktails and more. Sport events and live music.",
 }
 export default function RootLayout({ children }: React.PropsWithChildren) {
 	return (
