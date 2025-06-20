@@ -1,4 +1,3 @@
-import { AuthFooter } from "@/components/auth/auth-footer";
 import { LoginForm } from "@/components/auth/login-form";
 
 
@@ -11,7 +10,6 @@ export default function LoginPage() {
 			
 			<LoginForm />
 
-			<AuthFooter src="/auth/register" text="Don't have an account? Register" />
 		</div>
  )
 }
