@@ -21,6 +21,8 @@ interface MenuNavigationProps {
 }
 
 export function MenuNavigation({ categories, promotions }: MenuNavigationProps) {
+  const visibleCategories = categories.filter((c) => c.items && c.items.length > 0);
+
   return (
     <div className="w-full p-4 bg-transparent rounded-lg opacity-0 animate-fade-in animation-delay-1000">
       {/* <h2 className="pb-2 mb-4 text-lg font-semibold text-white border-b border-dashed border-neutral- ">
@@ -29,7 +31,7 @@ export function MenuNavigation({ categories, promotions }: MenuNavigationProps) 
       
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {/* Category navigation links */}
-        {categories.map((category) => (
+        {visibleCategories.map((category) => (
           <a
             key={category.id}
             href={`#category-${category.id}`}

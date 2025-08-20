@@ -7,6 +7,9 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 export function MenuCategory({ category }: MenuCategoryProps) {
   const { ref, isVisible } = useScrollAnimation();
 
+  // Hide empty categories
+  if (!category.items || category.items.length === 0) return null;
+
   return (
     <div 
       ref={ref}
@@ -67,15 +70,12 @@ export function MenuCategory({ category }: MenuCategoryProps) {
                   </div>
                 ) : (
                   <span className="text-lg font-bold text-white">
-                    {item.price}
+                    {String(item.price)}
                   </span>
                 )}
               </div>
             </div>
           ))}
-          {category.items.length === 0 && (
-            <p className="text-center text-neutral-500">No items available in this category</p>
-          )}
         </div>
     </div>
   );
