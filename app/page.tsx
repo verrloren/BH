@@ -10,18 +10,17 @@ import { redirect } from "next/navigation";
 import { getCategories } from "@/actions/dashboard";
 import { env } from "process";
 
-// Force dynamic rendering to always get fresh data
 export const dynamic = 'force-dynamic';
 
-// Poster types
+type PosterPrice = number | string | Record<string, string | number>;
+
 type PosterProduct = {
   product_id: string;
   product_name: string;
-  price: number;
+  price: PosterPrice; // can be object like {1: '1200'} or a number/string
   category_id?: string;
 };
 
-// Add a minimal Poster category type
 type PosterCategory = {
   id: string;      // Poster: category_id
   name: string;    // Poster: category_name
@@ -183,6 +182,8 @@ async function posterIntegrationRequest(endpoint: string, params: Record<string,
   };
 
   let { res, data } = await doFetch(access);
+	console.log('res', res)
+	console.log('data', data)
   const tokenError = data?.error?.code === 11 || res.status === 401;
 
   if ((!res.ok || data?.error) && tokenError && refresh) {
@@ -237,6 +238,21 @@ async function fetchPosterCategories(): Promise<PosterCategory[]> {
   }));
 }
 
+// Take price from Poster (including price objects), divide by 100 only if it's an object.
+function getMenuPrice(raw: PosterPrice): number {
+  if (raw && typeof raw === "object") {
+    const entries = Object.entries(raw);
+    if (entries.length > 0) {
+      const [, val] = entries.sort((a, b) => Number(a[0]) - Number(b[0]))[0];
+      const num = typeof val === "string" ? parseFloat(val) : Number(val);
+      return Number.isFinite(num) ? num / 100 : 0;
+    }
+    return 0;
+  }
+  const n = typeof raw === "string" ? parseFloat(raw) : Number(raw);
+  return Number.isFinite(n) ? n : 0;
+}
+
 async function fetchPosterProducts(): Promise<PosterProduct[]> {
   const { ok, data } = await posterIntegrationRequest("menu.getProducts", {
     format: "json",
@@ -249,7 +265,7 @@ async function fetchPosterProducts(): Promise<PosterProduct[]> {
   return list.map((p: any) => ({
     product_id: String(p.product_id),
     product_name: String(p.product_name ?? p.name ?? "Product"),
-    price: Number(p.price ?? 0),
+    price: p.price, // keep raw Poster price (may be object)
     category_id: String(p.category_id ?? p.menu_category_id ?? ""),
   }));
 }
@@ -285,7 +301,7 @@ export default async function Index({
           id: p.product_id,
           title: p.product_name,
           description: null,
-          price: p.price,
+          price: getMenuPrice(p.price), // extract and divide by 100 if needed
           oldPrice: null,
           image: null,
           isOnSale: false,
@@ -308,9 +324,6 @@ export default async function Index({
     description: null,
     createdAt: new Date(),
   }));
-
-  console.log("Poster categories:", posterCategories);
-  console.log("Poster products:", posterProducts);
 
   return (
     <Container>
