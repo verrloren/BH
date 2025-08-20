@@ -160,6 +160,32 @@ export async function getPosterCategories() {
   }
 }
 
+// Poster price can be scalar or per-spot object (e.g., {1: '1200'})
+type PosterPrice = number | string | Record<string, string | number>;
+
+// Normalize Poster price; if object, take the first value and divide by 100
+function normalizePosterPrice(raw: PosterPrice): number {
+  if (raw && typeof raw === "object") {
+    const entries = Object.entries(raw);
+    if (entries.length > 0) {
+      const [, val] = entries[0];
+      const num = typeof val === "string" ? parseFloat(val) : Number(val);
+      return Number.isFinite(num) ? num / 100 : 0;
+    }
+    return 0;
+  }
+  const n = typeof raw === "string" ? parseFloat(raw) : Number(raw);
+  return Number.isFinite(n) ? n : 0;
+}
+
+// Exported normalized product DTO
+export type PosterProduct = {
+  id: string;
+  title: string;
+  price: number; // normalized number ready for UI
+  categoryId: string;
+};
+
 export async function getPosterProducts(categoryId?: string) {
   try {
     const result = await posterFetch<any>("menu.getProducts", {
@@ -173,9 +199,9 @@ export async function getPosterProducts(categoryId?: string) {
     return list.map((p: any) => ({
       id: String(p.product_id),
       title: String(p.product_name ?? p.name ?? "Product"),
-      price: Number(p.price ?? 0),
+      price: normalizePosterPrice(p.price as PosterPrice),
       categoryId: String(p.category_id ?? p.menu_category_id ?? ""),
-    }));
+    })) as PosterProduct[];
   } catch (err) {
     console.error(err);
     return [];

@@ -40,7 +40,7 @@ export function MenuCategory({ category }: MenuCategoryProps) {
                   : 'opacity-0 translate-x-4'
               }`}
               style={{ 
-                transitionDelay: isVisible ? `${(index + 1) * 100}ms` : '0ms' 
+                transitionDelay: isVisible ? `${(index + 1) * 50}ms` : '0ms' 
               }}
             >
               <div className="flex-1">

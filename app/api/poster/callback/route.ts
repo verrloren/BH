@@ -55,7 +55,6 @@ export async function GET(req: Request) {
   const token = await exchangeCodeForToken(code);
   if (!token?.access_token) return res;
 
-  // NEW: persist tokens in DB (upsert by account)
   try {
     const account = getIntegrationAccount() || "default";
     const expiresAt =
@@ -71,7 +70,7 @@ export async function GET(req: Request) {
         expiresAt,
       },
       create: {
-        id: account, // provide required id
+        id: account,
         account,
         accessToken: token.access_token,
         refreshToken: token.refresh_token ?? null,
@@ -82,22 +81,9 @@ export async function GET(req: Request) {
     console.error("Failed to persist Poster tokens in DB. Ensure Prisma model exists.", e);
   }
 
-  const isProd = process.env.NODE_ENV === "production";
-  res.cookies.set("poster_access_token", token.access_token, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: "lax",
-    path: "/",
-    maxAge: token.expires_in ?? 3600,
-  });
-  if (token.refresh_token) {
-    res.cookies.set("poster_refresh_token", token.refresh_token, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 30 * 24 * 3600,
-    });
-  }
+  // Do not store tokens in cookies anymore; ensure any legacy cookies are cleared
+  res.cookies.delete("poster_access_token");
+  res.cookies.delete("poster_refresh_token");
+
   return res;
 }

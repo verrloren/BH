@@ -34,12 +34,12 @@ export function PromotionsDisplay({ promotions }: PromotionsDisplayProps) {
           <div
             key={promotion.id}
             className={`pl-4 py-2 bg-transparent transition-all duration-500 ease-out border-l-2  ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-60 translate-x-2"
+                isVisible 
+                  ? 'opacity-100 translate-x-0' 
+                  : 'opacity-0 translate-x-4'
             }`}
             style={{
-              transitionDelay: isVisible ? `${(index + 1) * 150}ms` : "0ms",
+              transitionDelay: isVisible ? `${(index + 1) * 50}ms` : "0ms",
               borderLeftColor: "#f7f959",
             }}
           >
