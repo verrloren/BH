@@ -1,4 +1,4 @@
-import NextAuth, { type DefaultSession } from 'next-auth';
+import NextAuth from 'next-auth';
 import {PrismaAdapter} from '@auth/prisma-adapter';
 
 import { db } from '@/lib/db';
@@ -13,6 +13,7 @@ export const {
 	auth,
 	signIn,
 	signOut
+	//@ts-expect-error 12321
 	} = NextAuth({
 		pages: {
 			//redirect to this url if something goes wrong
@@ -20,6 +21,7 @@ export const {
 			error: "/auth/error"
 		},
 		events: {
+	//@ts-expect-error 1232321
 			async linkAccount({ user }) {
 				await db.user.update({
 					where: { id: user.id },
@@ -29,6 +31,8 @@ export const {
 		},
 		callbacks:{
 			//passing token from jwt to session and adding new field with value of token id
+
+	//@ts-expect-error 12323221
 			async session({ token, session }) {
 				console.log({ sessionToken: token })
 
@@ -40,12 +44,12 @@ export const {
 				// add role to session.user
 
 				if(token.role && session.user) {
-					//@ts-expect-error 12321
 					session.user.role = token.role as UserRole;
 				}
 
 				return session
 			},	
+	//@ts-expect-error 1232322122
 			async jwt({ token }) {
 				/* pass role to token because we can get access from the token
 					inside middleware in the request

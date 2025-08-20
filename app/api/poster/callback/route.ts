@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 
 function getPosterIntegrationURL(): string | null {
   const raw = (process.env.POSTER_INTEGRATION || "").trim();
@@ -53,6 +54,33 @@ export async function GET(req: Request) {
 
   const token = await exchangeCodeForToken(code);
   if (!token?.access_token) return res;
+
+  // NEW: persist tokens in DB (upsert by account)
+  try {
+    const account = getIntegrationAccount() || "default";
+    const expiresAt =
+      typeof token.expires_in === "number"
+        ? new Date(Date.now() + token.expires_in * 1000)
+        : new Date(Date.now() + 3600 * 1000);
+
+    await db.posterAuth.upsert({
+      where: { account },
+      update: {
+        accessToken: token.access_token,
+        refreshToken: token.refresh_token ?? null,
+        expiresAt,
+      },
+      create: {
+        id: account, // provide required id
+        account,
+        accessToken: token.access_token,
+        refreshToken: token.refresh_token ?? null,
+        expiresAt,
+      },
+    });
+  } catch (e) {
+    console.error("Failed to persist Poster tokens in DB. Ensure Prisma model exists.", e);
+  }
 
   const isProd = process.env.NODE_ENV === "production";
   res.cookies.set("poster_access_token", token.access_token, {

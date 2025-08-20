@@ -4,6 +4,7 @@
 export const publicRoutes = [
 	"/",
 	"/api/poster",
+	"/poster/connect",
 ]
 
 
