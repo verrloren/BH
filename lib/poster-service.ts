@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import type { Promotion as UIPromotion } from "@/types/types";
 
 function getPosterIntegrationURL(): string | null {
   const raw = (process.env.POSTER_INTEGRATION || "").trim();
@@ -204,6 +205,36 @@ export async function getPosterProducts(categoryId?: string) {
     })) as PosterProduct[];
   } catch (err) {
     console.error(err);
+    return [];
+  }
+}
+
+// Helper to parse Poster datetime strings like "2024-04-29 00:00:00"
+function parsePosterDate(s?: string | null): Date | null {
+  if (!s || s.startsWith("0000-00-00")) return null;
+  // Avoid timezone shift; treat as local time
+  const iso = s.replace(" ", "T");
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+// NEW: Fetch promotions from Poster Integration
+export async function getPosterPromotions(): Promise<UIPromotion[]> {
+  try {
+    const result = await posterFetch<any>("clients.getPromotions", {});
+    if (!result.ok) return [];
+    const list = Array.isArray((result.data as any)?.response) ? (result.data as any).response : [];
+
+    return list.map((p: any) => ({
+      id: String(p.promotion_id),
+      title: String(p.name ?? "Promotion"),
+      description: null,
+      dateStart: parsePosterDate(p.date_start),
+      dateEnd: parsePosterDate(p.date_end),
+      autoApply: String(p.auto_apply ?? "0") === "1",
+    })) as UIPromotion[];
+  } catch (err) {
+    console.error("Failed to fetch Poster promotions", err);
     return [];
   }
 }

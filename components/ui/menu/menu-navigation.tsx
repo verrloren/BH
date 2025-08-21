@@ -1,5 +1,7 @@
 'use client'
 
+import { Promotion } from "@/types/types";
+
 interface Category {
   id: string;
   name: string;
@@ -8,12 +10,7 @@ interface Category {
   items: any[];
 }
 
-interface Promotion {
-  id: string;
-  title: string;
-  description: string | null;
-  createdAt: Date;
-}
+
 
 interface MenuNavigationProps {
   categories: Category[];

@@ -1,5 +1,3 @@
-
-
 export interface MenuItem {
   id: string;
   title: string;
@@ -27,7 +25,9 @@ export interface Promotion {
   id: string;
   title: string;
   description?: string | null;
-  createdAt: Date;
+  dateStart?: Date | null;
+  dateEnd?: Date | null;
+  autoApply?: boolean;
 }
 
 export interface PromotionsDisplayProps {

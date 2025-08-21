@@ -6,21 +6,23 @@ import { CredentialsInfo } from "@/components/ui/menu/credentials-info";
 import { MenuNavigation } from "@/components/ui/menu/menu-navigation";
 import { getCategories } from "@/actions/get-categories";
 import { getProducts } from "@/actions/get-products";
+import { getPromotions } from "@/actions/get-promotions";
 import { Category } from "@/types/types";
 
 export const dynamic = 'force-dynamic';
 
 export default async function Index() {
-  const [posterCategories, posterProducts] = await Promise.all([
+  const [posterCategories, posterProducts, posterPromotions] = await Promise.all([
     getCategories(),
     getProducts(),
+    getPromotions(),
   ]);
 
   const categories = posterCategories
-    .map((cat: { id: any; name: any; }) => {
+    .map((cat: { id: any; name: any }) => {
       const items = posterProducts
-        .filter((p: { categoryId: any; }) => p.categoryId && p.categoryId === cat.id)
-        .map((p: { id: any; title: any; price: any; }) => ({
+        .filter((p: { categoryId: any }) => p.categoryId && p.categoryId === cat.id)
+        .map((p: { id: any; title: any; price: any }) => ({
           id: p.id,
           title: p.title,
           description: null,
@@ -38,14 +40,10 @@ export default async function Index() {
         items,
       };
     })
-    .filter((cat: { items: string | any[]; }) => cat.items.length > 0);
+    .filter((cat: { items: string | any[] }) => cat.items.length > 0);
 
-  const promotions = posterProducts.map((p: { id: any; title: any; }) => ({
-    id: p.id,
-    title: p.title,
-    description: null,
-    createdAt: new Date(),
-  }));
+  // Use real promotions from Poster
+  const promotions = posterPromotions;
 
   return (
     <Container>
