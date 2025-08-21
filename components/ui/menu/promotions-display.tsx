@@ -39,7 +39,7 @@ export function PromotionsDisplay({ promotions }: PromotionsDisplayProps) {
                   : 'opacity-0 translate-x-4'
             }`}
             style={{
-              transitionDelay: isVisible ? `${(index + 1) * 50}ms` : "0ms",
+              transitionDelay: isVisible ? `${(index + 1) * 25}ms` : "0ms",
               borderLeftColor: "#f7f959",
             }}
           >
